@@ -46,6 +46,7 @@ runs:
           action.yml
           action.js
         sparse-checkout-cone-mode: false
+        # TODO: checkout into a special directory, do not clutter user's files
     - id: my-step-id
       name: "Friendly Name"
       uses: actions/github-script@v7
