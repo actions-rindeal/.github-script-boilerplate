@@ -17,8 +17,14 @@ jobs:
         echo "Env:"
         env | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }' 
 
+        ENV_VAR_FILE_BLACKLIST=(
+          [CHROME_BIN]=1
+        )
+
         # Iterate through all environment variables
         for var in $(compgen -e); do
+            (( ${ENV_VAR_FILE_BLACKLIST["$var"]} )) && continue || true
+        
             # Get the value of the environment variable
             value="${!var}"
             
