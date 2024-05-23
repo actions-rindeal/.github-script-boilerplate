@@ -1,3 +1,5 @@
+name: Test-1 Workflow Name
+
 on:
   push:
     paths:
@@ -14,7 +16,7 @@ jobs:
           console.debug({context})
           console.debug({env: process.env})
           core.setOutput("script-1-output", "script-1-output-value")
-      
+
     - uses: actions/github-script@HEAD
       with:
         script: |
