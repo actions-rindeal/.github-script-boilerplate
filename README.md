@@ -1,1 +1,1 @@
-# .github-script-boilerplate
+# Boilerplate for `actions/github-script`-based actions
