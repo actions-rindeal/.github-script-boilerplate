@@ -15,5 +15,27 @@ jobs:
     - shell: bash
       run: |
         echo "Env:"
-        env | sort | sed 's/^/  /'
+        env | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }' 
+
+        # Iterate through all environment variables
+        for var in $(compgen -e); do
+            # Get the value of the environment variable
+            value="${!var}"
+            
+            # Check if the value is a readable file
+            if [[ -r "$value" ]]; then
+                # Print the header with the realpath of the file
+                echo "File: $(realpath "$value")"
+                
+                # If the file is a JSON file, use jq to pretty-print it
+                if [[ "$(file -b --mime-type "$value")" == "application/json" ]]; then
+                    echo "  JSON content:"
+                    jq . "$value" | sed 's/^/    /'
+                else
+                    # Otherwise, print the content indented with two spaces
+                    echo "  Content:"
+                    echo "  $(cat "$value")"
+                fi
+            fi
+        done
         
