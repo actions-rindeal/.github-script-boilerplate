@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@HEAD
+      with:
+        script: |
+          console.debug({context})
+          console.debug({env: process.env})
+          core.setOutput("script-1-output", "script-1-output-value")
+      
+    - uses: actions/github-script@HEAD
+      with:
+        script: |
+          console.debug({context})
+          console.debug({env: process.env})
