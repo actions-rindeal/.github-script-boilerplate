@@ -21,7 +21,7 @@ jobs:
         for var in $(compgen -e); do
             # Get the value of the environment variable
             value="${!var}"
-            realpath="$( realpath "$value" 2>/dev/null )"
+            realpath="$( realpath "$value" 2>/dev/null || true )"
             [[ -z "${realpath}" || ! -f "${realpath}" ]] && continue || true
             
             #echo "Testing '$value'"
