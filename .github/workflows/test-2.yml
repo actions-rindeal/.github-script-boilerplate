@@ -25,12 +25,10 @@ jobs:
             # Check if the value is a readable file
             if file -b "$value" | grep -q "text" ; then
                 # Print the header with the realpath of the file
+                printf '%s=File: `%s`' "$var" "$value"
                 realpath=$(realpath "$value")
-                if [[ "$value" != "$realpath" ]]; then
-                    echo "$var=File: $value [$realpath]"
-                else
-                    echo "$var=File: $value"
-                fi
+                [[ "$value" != "$realpath" ]] && echo " [$realpath]" || echo
+
                 # If the file is a JSON file, use jq to pretty-print it
                 if [[ "$(file -b --mime-type "$value")" == "application/json" ]]; then
                     echo "  JSON content:"
