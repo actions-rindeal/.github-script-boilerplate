@@ -38,7 +38,7 @@ outputs:
 runs:
   using: composite
   steps:
-     # only use checkout if your index.js is an external script
+     # only use checkout if your action.js is an external script
     - uses: actions/checkout@v4
       with:
         # action.yml is required for some unknown reason
