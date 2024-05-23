@@ -23,14 +23,18 @@ jobs:
             value="${!var}"
             echo "Testing '$value'"
             # Check if the value is a readable file
-            if test -f "$value" && file -b "$value" | grep -q "text"; then
+            if file -b "$value" | grep -q "text" ; then
                 # Print the header with the realpath of the file
-                echo "File: $(realpath "$value")"
-                
+                realpath=$(realpath "$value")
+                if [[ "$value" != "$realpath" ]]; then
+                    echo "$var=File: $value [$realpath]"
+                else
+                    echo "$var=File: $value"
+                fi
                 # If the file is a JSON file, use jq to pretty-print it
                 if [[ "$(file -b --mime-type "$value")" == "application/json" ]]; then
                     echo "  JSON content:"
-                    jq . "$value" | sed 's/^/    /'
+                    jq -C -S . "$value" | sed 's/^/    /'
                 else
                     # Otherwise, print the content indented with two spaces
                     echo "  Content:"
