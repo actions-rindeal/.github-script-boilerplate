@@ -10,44 +10,68 @@ on:
 
 jobs:
   my-job:
+    defaults:
+      run:
+        shell: bash
     runs-on: ubuntu-latest
     steps:
-    - shell: bash
+    - id: init
       run: |
-        echo "Env:"
-        env | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }' 
-
-        declare -A ENV_VAR_FILE_BLACKLIST=(
-          [CHROME_BIN]=1
-        )
-
-        # Iterate through all environment variables
-        for var in $(compgen -e); do
-            (( ${ENV_VAR_FILE_BLACKLIST["$var"]} )) && continue || true
+        pprint_env_vars() {
+            echo "Env:"
+            env | sort | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }'
+        }
         
-            # Get the value of the environment variable
-            value="${!var}"
+        maybe_pprint_file_content() {
+            local var="$1"
+            local value="$2"
+            local realpath="$3"
             
-            realpath="$( realpath "$value" 2>/dev/null || true )"
-            [[ -z "${realpath}" || ! -f "${realpath}" ]] && continue || true
-
-            # Check if the value is a readable file
-            if ! { file --mime-encoding "$realpath" 2>/dev/null || true ; } | grep -q "binary" ; then
-                # Print the header with the realpath of the file
-                printf '%s = `%s`' "$var" "$value"
-                [[ "$value" != "$realpath" ]] && echo " {'$realpath'}" || echo
-
-                # If the file is a JSON file, use jq to pretty-print it
-                if [[ "$(file -b --mime-type "$value")" == "application/json" ]]; then
-                    echo "  JSON content:"
-                    echo "  ============="
-                    jq -C -S . "$value" | sed 's/^/    /'
-                else
-                    # Otherwise, print the content indented with two spaces
-                    echo "  Content:"
-                    echo "  ========"
-                    sed -e 's/^/    /' -- "$value"
-                fi
+            { file --mime-encoding "$realpath" 2>/dev/null || true ; } | grep -q "binary" && return 1 || true
+            
+            printf '%s = `%s`' "$var" "$value"
+            [[ "$value" != "$realpath" ]] && echo " {'$realpath'}" || echo
+        
+            if [[ "$(file -b --mime-type "$value")" == "application/json" ]]; then
+                echo "  JSON content:"
+                echo "  ============="
+                jq -C -S . "$value" | sed 's/^/    /'
+            else
+                echo "  Content:"
+                echo "  ========"
+                sed -e 's/^/    /' -- "$value"
             fi
-        done
+        }
+        main() {
+            # Main script starts here
+            declare -A ENV_VAR_FILE_BLACKLIST=(
+                [CHROME_BIN]=1
+            )
+            
+            pprint_env_vars
+            
+            for var in $(compgen -e); do
+                [[ ${ENV_VAR_FILE_BLACKLIST[$1]} ]] && continue || true
+            
+                value="${!var}"
+                realpath="$(realpath "$value" 2>/dev/null || true)"
+                if [[ -n "${realpath}" && -f "${realpath}" ]]; then
+                    maybe_pprint_file_content "$var" "$value" "$realpath"
+                fi
+            done
+        }
+
+        declare -p -f > $HOME/main.sh
+
+    - id: stage-1
+      run: |
+        source $HOME/main.sh
+        main
+
+    - uses: actions/checkout@HEAD
+
+    - id: stage-2
+      run: |
+        source $HOME/main.sh
+        main
         
