@@ -16,7 +16,7 @@ jobs:
       with:
         script: |
           async function printWithJq( obj ) {
-            let {stdout, stderr} = { '', ''}
+            let stdout = '', stderr = ''
             const options = {
               listeners: {
                 stdout: (data) => { stdout += data.toString() },
@@ -26,7 +26,7 @@ jobs:
             await exec.exec('echo', [JSON.stringify(obj), '|', 'jq', '-C', '.'], options)
             console.log('StdOut:', stdout)
             console.log('StdErr:', stderr)
-            // return { stdout, stderr }
+            return { stdout, stderr }
           }
           await printWithJq( { context } )
           await printWithJq( { env: process.env } )
