@@ -16,7 +16,7 @@ jobs:
       run: |
         echo "Env:"
         env | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }' 
-
+        set -vx
         # Iterate through all environment variables
         for var in $(compgen -e); do
             # Get the value of the environment variable
