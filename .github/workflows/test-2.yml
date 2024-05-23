@@ -23,7 +23,7 @@ jobs:
             value="${!var}"
             
             # Check if the value is a readable file
-            if [[ -f "$value" && -r "${value}" ]] && file -b "$value" | grep -q "text"; then
+            if [[ -f "$value" ]] && file -b "$value" | grep -q "text"; then
                 # Print the header with the realpath of the file
                 echo "File: $(realpath "$value")"
                 
