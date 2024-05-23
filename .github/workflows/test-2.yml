@@ -22,9 +22,10 @@ jobs:
             # Get the value of the environment variable
             value="${!var}"
             realpath="$( realpath "$value" 2>/dev/null )"
+            [[ -z "${realpath}" || ! -f "${realpath}" ]] && continue
             
             echo "Testing '$value'"
-            file --mime-encoding "$value"
+            file --mime-encoding "$realpath"
 
             # Check if the value is a readable file
             if file -b "$value" | grep -q "text" ; then
