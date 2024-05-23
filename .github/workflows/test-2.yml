@@ -19,7 +19,7 @@ jobs:
       run: |
         pprint_env_vars() {
             echo "Env:"
-            env | sort | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }'
+            env | sort | awk -F '=' '{ printf("  %-25s = '", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print "'"; }'
         }
         
         maybe_pprint_file_content() {
