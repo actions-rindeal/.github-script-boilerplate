@@ -1,0 +1,19 @@
+name: Test-2 Workflow Name
+
+on:
+  push:
+    branches:
+    - playground
+    paths:
+    - .github/workflows/test-2.yml
+  workflow_dispatch:
+
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+    - shell: bash
+      run: |
+        echo "Env:"
+        env | sort | sed 's/^/  /'
+        
