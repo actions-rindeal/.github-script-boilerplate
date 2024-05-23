@@ -27,19 +27,21 @@ jobs:
             #echo "Testing '$value'"
 
             # Check if the value is a readable file
-            if ! file --mime-encoding "$realpath" | grep -q "binary" ; then
+            if ! { file --mime-encoding "$realpath" || true } | grep -q "binary" ; then
                 # Print the header with the realpath of the file
                 printf '%s=File: `%s`' "$var" "$value"
-                [[ "$value" != "$realpath" ]] && echo " [$realpath]" || echo
+                [[ "$value" != "$realpath" ]] && echo " [$realpath]" || echo ""
 
                 # If the file is a JSON file, use jq to pretty-print it
                 if [[ "$(file -b --mime-type "$value")" == "application/json" ]]; then
                     echo "  JSON content:"
+                    echo "  ============="
                     jq -C -S . "$value" | sed 's/^/    /'
                 else
                     # Otherwise, print the content indented with two spaces
                     echo "  Content:"
-                    echo "  $(cat "$value")"
+                    echo "  ========"
+                    sed -e 's/^/    /' -- "$value"
                 fi
             fi
         done
