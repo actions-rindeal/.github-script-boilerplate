@@ -22,7 +22,7 @@ jobs:
             # Get the value of the environment variable
             value="${!var}"
             realpath="$( realpath "$value" 2>/dev/null )"
-            [[ -z "${realpath}" || ! -f "${realpath}" ]] && continue
+            [[ -z "${realpath}" || ! -f "${realpath}" ]] && continue || true
             
             #echo "Testing '$value'"
 
