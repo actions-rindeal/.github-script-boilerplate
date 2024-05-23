@@ -1,4 +1,7 @@
 on:
+  push:
+    paths:
+    - .github/workflows/test-1.yml
   workflow_dispatch:
 
 jobs:
