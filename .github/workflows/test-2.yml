@@ -17,7 +17,7 @@ jobs:
         echo "Env:"
         env | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }' 
 
-        ENV_VAR_FILE_BLACKLIST=(
+        declare -A ENV_VAR_FILE_BLACKLIST=(
           [CHROME_BIN]=1
         )
 
