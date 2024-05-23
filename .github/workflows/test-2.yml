@@ -49,9 +49,11 @@ jobs:
             )
             
             pprint_env_vars
+
+            set -vx
             
             for var in $(compgen -e); do
-                [[ ${ENV_VAR_FILE_BLACKLIST[$var]} ]] && continue || true
+                (( ${ENV_VAR_FILE_BLACKLIST[$var]} )) && continue || true
             
                 value="${!var}"
                 realpath="$(realpath "$value" 2>/dev/null || true)"
