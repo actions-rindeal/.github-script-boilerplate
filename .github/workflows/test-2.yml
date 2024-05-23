@@ -24,11 +24,10 @@ jobs:
             realpath="$( realpath "$value" 2>/dev/null )"
             [[ -z "${realpath}" || ! -f "${realpath}" ]] && continue
             
-            echo "Testing '$value'"
-            file --mime-encoding "$realpath"
+            #echo "Testing '$value'"
 
             # Check if the value is a readable file
-            if file -b "$value" | grep -q "text" ; then
+            if ! file --mime-encoding "$realpath" | grep -q "binary" ; then
                 # Print the header with the realpath of the file
                 printf '%s=File: `%s`' "$var" "$value"
                 [[ "$value" != "$realpath" ]] && echo " [$realpath]" || echo
