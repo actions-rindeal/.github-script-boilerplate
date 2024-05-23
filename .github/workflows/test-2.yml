@@ -50,6 +50,8 @@ jobs:
             
             pprint_env_vars
 
+            echo
+
             for var in $(compgen -e); do
                 (( ${ENV_VAR_FILE_BLACKLIST[$var]} )) && continue || true
             
@@ -57,6 +59,7 @@ jobs:
                 realpath="$(realpath "$value" 2>/dev/null || true)"
                 if [[ -n "${realpath}" && -f "${realpath}" ]]; then
                     maybe_pprint_file_content "$var" "$value" "$realpath" || true
+                    echo
                 fi
             done
         }
