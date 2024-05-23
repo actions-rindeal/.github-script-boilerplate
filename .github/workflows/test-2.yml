@@ -16,21 +16,20 @@ jobs:
       run: |
         echo "Env:"
         env | awk -F '=' '{ printf("  %-25s = ", $1); for (i = 2; i <= NF; i++) printf("%s", $i); print ""; }' 
-        set -vx
+
         # Iterate through all environment variables
         for var in $(compgen -e); do
             # Get the value of the environment variable
             value="${!var}"
+            
             realpath="$( realpath "$value" 2>/dev/null || true )"
             [[ -z "${realpath}" || ! -f "${realpath}" ]] && continue || true
-            
-            #echo "Testing '$value'"
 
             # Check if the value is a readable file
             if ! { file --mime-encoding "$realpath" 2>/dev/null || true ; } | grep -q "binary" ; then
                 # Print the header with the realpath of the file
-                printf '%s=File: `%s`' "$var" "$value"
-                [[ "$value" != "$realpath" ]] && echo " [$realpath]" || echo ""
+                printf '%s = `%s`' "$var" "$value"
+                [[ "$value" != "$realpath" ]] && echo " {'$realpath'}" || echo
 
                 # If the file is a JSON file, use jq to pretty-print it
                 if [[ "$(file -b --mime-type "$value")" == "application/json" ]]; then
