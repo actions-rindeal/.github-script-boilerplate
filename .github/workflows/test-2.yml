@@ -22,6 +22,7 @@ jobs:
             # Get the value of the environment variable
             value="${!var}"
             echo "Testing '$value'"
+            file -b "$value"
             # Check if the value is a readable file
             if file -b "$value" | grep -q "text" ; then
                 # Print the header with the realpath of the file
