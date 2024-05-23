@@ -15,14 +15,15 @@ jobs:
     - uses: actions/github-script@HEAD
       with:
         script: |
-          const { spawn } = require('child_process');
+          const { spawn } = require('child_process')
           
-          async function printWithJq(obj) {
+          async function printWithJq(obj, ...args) {
               return new Promise((resolve, reject) => {
-                  const jq = spawn('jq', ['-C', '.'], { stdio: ['pipe', 'pipe', 'pipe'] })
+                  const jqArgs = ['-C', '-S'].concat(args)
+                  const jq = spawn('jq', jqArgs, { stdio: ['pipe', 'pipe', 'pipe'] })
                   let stdout = '', stderr = ''
-                  jq.stdout.on('data', (data) => { stdout += data.toString(); })
-                  jq.stderr.on('data', (data) => { stderr += data.toString(); })
+                  jq.stdout.on('data', (data) => { stdout += data.toString() })
+                  jq.stderr.on('data', (data) => { stderr += data.toString() })
                   jq.on('close', (code) => {
                       if (code !== 0) {
                           console.error(`jq process exited with code ${code}`)
@@ -32,10 +33,10 @@ jobs:
                           console.log('StdErr:', stderr)
                           resolve({ stdout, stderr })
                       }
-                  });
+                  })
                   jq.stdin.write(JSON.stringify(obj))
                   jq.stdin.end()
-              });
+              })
           }
           await printWithJq( { context } )
           await printWithJq( { env: process.env } )
