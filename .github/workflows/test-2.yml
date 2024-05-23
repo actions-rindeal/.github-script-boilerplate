@@ -21,9 +21,9 @@ jobs:
         for var in $(compgen -e); do
             # Get the value of the environment variable
             value="${!var}"
-            
+            echo "Testing '$value'"
             # Check if the value is a readable file
-            if [[ -f "$value" ]] && file -b "$value" | grep -q "text"; then
+            if test -f "$value" && file -b "$value" | grep -q "text"; then
                 # Print the header with the realpath of the file
                 echo "File: $(realpath "$value")"
                 
