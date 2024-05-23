@@ -21,13 +21,15 @@ jobs:
         for var in $(compgen -e); do
             # Get the value of the environment variable
             value="${!var}"
+            realpath="$( realpath "$value" 2>/dev/null )"
+            
             echo "Testing '$value'"
-            file -b "$value"
+            file --mime-encoding "$value"
+
             # Check if the value is a readable file
             if file -b "$value" | grep -q "text" ; then
                 # Print the header with the realpath of the file
                 printf '%s=File: `%s`' "$var" "$value"
-                realpath=$(realpath "$value")
                 [[ "$value" != "$realpath" ]] && echo " [$realpath]" || echo
 
                 # If the file is a JSON file, use jq to pretty-print it
