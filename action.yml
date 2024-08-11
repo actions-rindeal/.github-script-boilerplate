@@ -1,9 +1,9 @@
-# SPDX-FileCopyrightText:  ANNO DOMINI 2024  Jan Chren (rindeal)  <dev.rindeal(a)gmail.com>
+# SPDX-FileCopyrightText:  ANNO DOMINI 2024  Jan Chren ~rindeal  <dev.rindeal(a)gmail.com>
 # SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only
 
 name: "{{ ACTION_NAME }}"
 description: "{{ ACTION_DESCRIPTION }}"
-author: Jan Chren (rindeal)
+author: Jan Chren ~rindeal
 branding:  # https://haya14busa.github.io/github-action-brandings/
   icon:    # https://feathericons.com/
   color:   # one of: white, yellow, blue, green, orange, red, purple, grey-dark
