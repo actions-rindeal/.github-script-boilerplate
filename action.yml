@@ -39,7 +39,7 @@ runs:
   using: composite
   steps:
      # only use checkout if your action.js is an external script
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@main
       with:
         # action.yml is required for some unknown reason
         sparse-checkout: |
@@ -49,11 +49,10 @@ runs:
         # TODO: checkout into a special directory, do not clutter user's files
     - id: my-step-id
       name: "Friendly Name"
-      uses: actions/github-script@v7
+      uses: actions/github-script@main
       with:
         script: |
           const script = require('./action.js')
-          await script(github, context, core, glob, io, exec, require)
-            .catch(error => core.setFailed(`${error}`))
+          await script({github, context, core, glob, io, exec, require})
       env:
         INPUT_MY_INPUT_NAME:   ${{ inputs.my-input-name }}
