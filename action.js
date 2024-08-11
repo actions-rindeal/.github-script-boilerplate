@@ -21,7 +21,7 @@
  *   - The Node.js require function.
  *   - https://nodejs.org/api/modules.html#modules_require_id
  */
-module.exports = async (github, context, core, glob, io, exec, require) => {
+module.exports = async ({github, context, core, glob, io, exec, require}) => {
 
   // YOUR CODE HERE
   
