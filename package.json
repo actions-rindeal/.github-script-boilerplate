@@ -1,5 +1,5 @@
 {
-  "name": "my_project",
+  "name": "@actions-rindeal/...",
   "version": "1.0.0",
   "devDependencies": {
     "@actions/core": "^1.10.0",
