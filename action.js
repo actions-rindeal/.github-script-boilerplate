@@ -1,7 +1,7 @@
 /**
  * @param {object} params
  * @param {import('@actions/github/lib/context').Context} params.context - 
- *   @see {@link https://github.com/actions/toolkit/tree/main/packages/github}
+ *   @see {@link https://github.com/actions/toolkit/blob/main/packages/github/src/context.ts}
  * @param {typeof import('@actions/core')} params.core - 
  *   @see {@link https://github.com/actions/toolkit/tree/main/packages/core}
  * @param {typeof import('@actions/github')} params.github - 
@@ -12,8 +12,7 @@
  *   @see {@link https://github.com/actions/toolkit/tree/main/packages/glob}
  * @param {typeof import('@actions/io')} params.io - 
  *   @see {@link https://github.com/actions/toolkit/tree/main/packages/io}
- * @param {NodeRequire} params.require - 
- *   @see {@link https://nodejs.org/api/modules.html#modules_require_id}
+ * @param {NodeRequire} params.require
  */
 module.exports = async ({github, context, core, glob, io, exec, require}) => {
 
