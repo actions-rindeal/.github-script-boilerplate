@@ -40,7 +40,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - id: my-step-id
+    - id: 'my-step-id'
       name: "Friendly Name"
       uses: 'actions/github-script@main'
       with:
@@ -48,4 +48,4 @@ runs:
           const script = require(`${process.env.GITHUB_ACTION_PATH}/action.js`)
           return await script({github, context, core, glob, io, exec, require})
       env:
-        'INPUT_MY-INPUT-NAME':   ${{ inputs['my-input-name'] }}
+        'INPUT_MY-INPUT-NAME': ${{ inputs['my-input-name'] }}
