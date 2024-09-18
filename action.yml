@@ -46,6 +46,6 @@ runs:
       with:
         'script': |
           const script = require(`${process.env.GITHUB_ACTION_PATH}/action.js`)
-          await script({github, context, core, glob, io, exec, require})
+          return await script({github, context, core, glob, io, exec, require})
       env:
         'INPUT_MY-INPUT-NAME':   ${{ inputs['my-input-name'] }}
