@@ -45,7 +45,8 @@ runs:
       uses: 'actions/github-script@main'
       with:
         'script': |
-          const script = require(`${process.env.GITHUB_ACTION_PATH}/action.js`)
+          // const script = require(`${process.env.GITHUB_ACTION_PATH}/action.js`)
+          const script = require('${{ github.action_path || '/dev/null' }}/action.js')
           return await script({github, context, core, glob, io, exec, require})
       env:
         'INPUT_MY-INPUT-NAME': ${{ inputs['my-input-name'] }}
